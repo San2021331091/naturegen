@@ -26,7 +26,7 @@ app = Server(
 # Reuse the existing API endpoints, security middleware, and error handlers.
 app.include_router(api_app.router)
 for middleware in reversed(api_app.user_middleware):
-    app.add_middleware(middleware.cls, **middleware.options)
+    app.add_middleware(middleware.cls, *middleware.args, **middleware.kwargs)
 for exception, handler in api_app.exception_handlers.items():
     app.add_exception_handler(exception, handler)
 
