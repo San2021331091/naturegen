@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Leaf, LoaderCircle, RefreshCw, ShieldCheck } from 'lucide-react';
+import { Leaf, LoaderCircle, RefreshCw } from 'lucide-react';
 import { active } from '../lib/api';
 import { useStudio } from '../lib/store';
 import { navigation, titles } from '../lib/constants';
@@ -163,9 +163,7 @@ export default function Studio({ page }: { page: string }) {
             </div>
 
             <footer>
-              <span>NatureGen — Photorealistic Nature Imagery &amp; Cinematic Video Generation.</span>
-              <span><ShieldCheck size={13} /> Local &amp; private</span>
-            </footer>
+              <span>NatureGen — Photorealistic Nature Imagery &amp; Cinematic Video Generation.</span>            </footer>
           </main>
         </div>
       </div>

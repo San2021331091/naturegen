@@ -8,7 +8,7 @@ export function message(error: unknown): string {
     const detail = error.response?.data?.detail;
     if (typeof detail === 'string') return detail;
     if (Array.isArray(detail)) return detail.map((d: { msg: string }) => d.msg).join('; ');
-    return error.response ? `Request failed (${error.response.status}).` : 'Cannot reach the backend. Start FastAPI on port 8000.';
+    return error.response ? `Request failed (${error.response.status}).` : (process.env.NODE_ENV === 'production' ? 'Cannot reach the studio engine. Please try again in a moment.' : 'Cannot reach the backend. Start FastAPI on port 8000.');
   }
   return error instanceof Error ? error.message : 'Something went wrong.';
 }

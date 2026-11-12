@@ -6,7 +6,7 @@ type RouteContext = { params: Promise<{ path: string[] }> };
 function isPublicDemoRequest(method: string, path: string[]): boolean {
   const key = path.join('/');
   if (method === 'GET') {
-    return ['health', 'settings', 'dataset/stats'].includes(key)
+    return ['health', 'settings', 'dataset/stats', 'jobs', 'history', 'video-history'].includes(key)
       || (path.length === 2 && path[0] === 'jobs' && /^[a-f0-9]{32}$/.test(path[1]))
       || (path.length === 2 && path[0] === 'generated' && /^[a-f0-9]{32}\.png$/.test(path[1]))
       || (path.length === 2 && path[0] === 'videos' && /^[a-f0-9]{32}\.mp4$/.test(path[1]));
@@ -15,15 +15,15 @@ function isPublicDemoRequest(method: string, path: string[]): boolean {
     return ['prompts/generate', 'generate', 'generate-video'].includes(key)
       || (path.length === 3 && path[0] === 'jobs' && /^[a-f0-9]{32}$/.test(path[1]) && path[2] === 'cancel');
   }
+  if (method === 'DELETE') {
+    // The gallery's delete button.
+    return path.length === 2 && ['history', 'video-history'].includes(path[0]) && /^[a-f0-9]{32}$/.test(path[1]);
+  }
   return false;
 }
 
 async function proxy(request: Request, context: RouteContext): Promise<Response> {
   const { path } = await context.params;
-  if (request.method === 'GET' && ['jobs', 'history', 'video-history'].includes(path.join('/'))) {
-    // These records are shared by all visitors on the Space, so never expose them publicly.
-    return Response.json([]);
-  }
   if (!isPublicDemoRequest(request.method, path)) {
     return Response.json({ detail: 'This endpoint is not available in the public demo.' }, { status: 403 });
   }

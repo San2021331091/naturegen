@@ -1,5 +1,5 @@
 'use client';
-import { Film, ShieldCheck, Sparkles } from 'lucide-react';
+import { Film, Sparkles } from 'lucide-react';
 import { useStudio } from '../../lib/store';
 
 export function Settings() {
@@ -40,14 +40,7 @@ export function Settings() {
           <dd>H.264 MP4 (Web &amp; Mobile Compatible)</dd>
           <dt>Audio Track</dt>
           <dd>Stereo Nature Soundscape (22.05 kHz)</dd>
-          <dt>Storage Location</dt>
-          <dd>Local Device Storage</dd>
         </dl>
-
-        <div className="notice" style={{ marginTop: 20, marginBottom: 0 }}>
-          <ShieldCheck size={16} style={{ display: 'inline', verticalAlign: '-3px', marginRight: 6 }} />
-          <strong>100% Local &amp; Private.</strong> All creations are rendered on your machine and stored locally on your device.
-        </div>
       </section>
     </div>
   );
