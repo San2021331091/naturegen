@@ -1,0 +1,42 @@
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+.next/
+*.tsbuildinfo
+.env
+.env.local
+.env.*
+!.env.example
+!.env.local.example
+backend/data/
+backend/checkpoints/
+backend/results/
+backend/models/
+backend/logs/
+!**/.gitkeep
+
+# Temporary test and local build output
+.tmp/
+.tmp_pytest/
+frontend/out/
+
+# Python environments and tooling
+venv/
+env/
+.mypy_cache/
+.ruff_cache/
+coverage.xml
+htmlcov/
+
+# Local environment overrides
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
