@@ -32,7 +32,8 @@ requests = defaultdict(deque)
 
 @app.middleware('http')
 async def local_write_guard(request: Request, call_next):
-    if request.method in ('POST', 'DELETE'):
+    # Only the NatureGen API is guarded; the Space's Gradio page posts to its own /gradio_api routes.
+    if request.method in ('POST', 'DELETE') and request.url.path.startswith('/api/'):
         origin = request.headers.get('origin')
         if origin and origin not in ORIGINS:
             return JSONResponse({'detail': 'Origin is not allowed.'}, status_code=403)
