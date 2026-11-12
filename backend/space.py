@@ -5,6 +5,18 @@ from contextlib import asynccontextmanager
 os.environ.setdefault('DEVICE', 'cpu')
 os.environ.setdefault('TORCH_NUM_THREADS', '2')
 
+# ZeroGPU hardware refuses to start unless one function is decorated with @spaces.GPU.
+# Generation stays on CPU; this hook only satisfies that startup check.
+try:
+    import spaces
+except ImportError:  # Not on ZeroGPU hardware (local runs, CPU Spaces).
+    spaces = None
+
+if spaces is not None:
+    @spaces.GPU(duration=1)
+    def _zerogpu_compatibility_hook():
+        return None
+
 from gradio import Server
 
 from app.main import app as api_app
