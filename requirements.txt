@@ -1,6 +1,7 @@
 accelerate>=0.34,<2
 diffusers>=0.35,<1
 fastapi>=0.115,<1
+huggingface-hub>=1.32,<3
 httpx>=0.28,<1
 imageio>=2.35,<3
 imageio-ffmpeg>=0.5.1,<1
@@ -9,4 +10,4 @@ peft>=0.13,<1
 Pillow>=11,<13
 pydantic>=2.10,<3
 python-dotenv>=1,<2
-transformers>=4.41,<5
+transformers>=5.22.2,<6
