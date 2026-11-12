@@ -159,6 +159,5 @@ The synthetic overfit test verifies gradients and decreasing loss on generated t
 | Jobs | `GET /api/jobs`, `/api/jobs/{id}`; `POST /api/jobs/{id}/cancel` |
 | History | `GET /api/history`, `/api/video-history`; `DELETE /api/history/{id}`, `/api/video-history/{id}` |
 
-## Remaining research work
 
-Expand and audit the licensed real dataset, run the fixed-seed evaluation suite, and document visual quality, adherence, diversity, and memorization. This smoke run establishes only that training, checkpoint restore, and sampling execute. Consider longer training or larger resolutions only after there are enough reviewed pairs and the evaluation supports it. No image-quality guarantee is possible from the software implementation or diffusion loss alone. Optional alignment losses, negative prompts, Min-SNR, automatic semantic scoring, and progressive-resolution training are intentionally not presented as implemented features.
+[Open Link](https://naturegen-gules.vercel.app/)
