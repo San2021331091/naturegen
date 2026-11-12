@@ -15,7 +15,7 @@ models:
 
 # NatureGen AI
 
-A modern premium nature image/video studio with a Next.js dashboard and FastAPI backend. Image generation uses the local, pretrained `segmind/tiny-sd` Stable Diffusion model at 512x512. Short video generation uses the same Tiny-SD model and photo LoRA, then uses a small SegFormer model to animate water, sky, and foliage regions while keeping the camera fixed. A separate from-scratch diffusion model remains available for training experiments; its checkpoint does not power the Create page.
+A modern and new nature image/video studio with a Next.js dashboard and FastAPI backend. Image generation uses the local, pretrained `segmind/tiny-sd` Stable Diffusion model at 512x512. Short video generation uses the same Tiny-SD model and photo LoRA, then uses a small SegFormer model to animate water, sky, and foliage regions while keeping the camera fixed. A separate from-scratch diffusion model remains available for training experiments; its checkpoint does not power the Create page.
 
 ## What is built
 
