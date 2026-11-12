@@ -37,4 +37,5 @@ def root():
 
 
 if __name__ == '__main__':
-    app.launch(server_name='0.0.0.0', server_port=7860)
+    # No Node front-end: this Space only serves the API, so Python answers on 7860 directly.
+    app.launch(server_name='0.0.0.0', server_port=7860, ssr_mode=False)
