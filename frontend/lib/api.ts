@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000').replace(/\/$/, '');
+export const baseURL = (process.env.NEXT_PUBLIC_API_URL ?? (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000')).replace(/\/$/, '');
 export const api = axios.create({ baseURL, timeout: 30000 });
 export const imageURL = (path: string) => `${baseURL}${path}`;
 export function message(error: unknown): string {

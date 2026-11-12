@@ -20,6 +20,7 @@ backend/logs/
 .tmp/
 .tmp_pytest/
 frontend/out/
+frontend/.vercel/
 
 # Python environments and tooling
 venv/

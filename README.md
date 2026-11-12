@@ -4,7 +4,7 @@ emoji: 🌿
 colorFrom: green
 colorTo: blue
 sdk: gradio
-app_file: app.py
+app_file: backend/space.py
 python_version: "3.12"
 startup_duration_timeout: 30m
 models:
@@ -32,9 +32,9 @@ A local nature image/video studio with a Next.js dashboard and FastAPI backend. 
 
 ## Deploy to Hugging Face Spaces (free ZeroGPU)
 
-The root `app.py` is a Gradio deployment entry point for ZeroGPU Spaces. It reuses the existing backend's Tiny-SD image generator and SegFormer guided video pipeline, but keeps inference on CPU. The existing React app remains available for local use or a paid Docker Space. Model weights download on first use. Space storage is ephemeral, so generated images, videos, history, and LoRA data are not durable across restarts.
+The Space runs the FastAPI backend from `backend/space.py`; the Next.js studio is deployed separately. Tiny-SD image and video generation stays on CPU. Model weights download on first use. Space storage is ephemeral, so generated images, videos, history, and LoRA data are not durable across restarts.
 
-Create a **Gradio Space** with the Blank template, select **ZeroGPU**, and choose Private if available for your account. After creating it, open PowerShell in this project folder and run these commands, replacing the owner and Space name:
+Create a **Gradio Space** with the Blank template and select **ZeroGPU**. Keep it Private; the Vercel server proxy authenticates using a read token stored as a server-side secret. After creating it, open PowerShell in this project folder and run these commands, replacing the owner and Space name:
 
 ```powershell
 git init
@@ -45,6 +45,17 @@ git push -u space HEAD:main
 ```
 
 Git may ask you to sign in to Hugging Face during the push. Then open Space **Settings → Variables and secrets** and add `OPENROUTER_API_KEY` as a secret for prompt suggestions. Never add credentials to Git. Model weights download on first use; CPU inference is slower than GPU, and generated files are removed when the Space restarts. See the [Spaces overview](https://huggingface.co/docs/hub/spaces-overview).
+
+## Deploy the Next.js studio to Vercel
+
+The Vercel app uses the existing Next.js project in `frontend/` and proxies selected public-demo endpoints to the private HF Space. The Hugging Face token stays server-side. The proxy allows image/video generation and status/media reads; dataset editing, training, and history deletion remain unavailable to public visitors.
+
+1. Push this project to a Git provider Vercel supports, or install the Vercel CLI and deploy from `frontend/`.
+2. Set the Vercel project Root Directory to `frontend` when importing the repository.
+3. In Vercel **Settings → Environment Variables**, add `HF_TOKEN` with a Hugging Face access token that has **read** access to this private Space. Add `HF_SPACE_URL=https://sanloxai-springspace.hf.space` if the Space has a different URL.
+4. Deploy. Production API calls use the same-origin Next.js proxy; no `NEXT_PUBLIC_` token is used.
+
+For CLI deployment from PowerShell, run `npx vercel` inside `frontend`, follow the project linking prompts, add `HF_TOKEN` through the Vercel dashboard, then run `npx vercel --prod`. Do not paste the token into source files or commit it. Hugging Face documents read-token access for private Spaces in its [Spaces API guide](https://huggingface.co/docs/hub/spaces-api-endpoints).
 
 ## Run on Windows
 
