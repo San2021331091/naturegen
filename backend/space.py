@@ -1,27 +1,40 @@
-"""Entry point for a Hugging Face Gradio Space: serves the NatureGen API on port 7860.
-
-Local development does not use this file; run uvicorn on app.main:app as before.
-"""
+"""Run NatureGen's FastAPI routes through Gradio's Space-managed server."""
 import os
+from contextlib import asynccontextmanager
 
 os.environ.setdefault('DEVICE', 'cpu')
 os.environ.setdefault('TORCH_NUM_THREADS', '2')
 
-import gradio as gr
-import uvicorn
+from gradio import Server
 
-from app.main import app
+from app.main import app as api_app
 
-with gr.Blocks(title='NatureGen API') as page:
-    gr.Markdown(
-        '# NatureGen API\n'
-        'This Space is the engine behind the NatureGen studio; the studio itself is hosted separately.\n\n'
-        'Health check: `/api/health` · API docs: `/docs`'
-    )
 
-# The API routes are registered first, so they win; the info page answers everything else.
-app = gr.mount_gradio_app(app, page, path='/')
+@asynccontextmanager
+async def lifespan(_server):
+    async with api_app.router.lifespan_context(api_app):
+        yield
+
+
+app = Server(
+    title=api_app.title,
+    version=api_app.version,
+    description='NatureGen image and video generation API.',
+    lifespan=lifespan,
+)
+
+# Reuse the existing API endpoints, security middleware, and error handlers.
+app.include_router(api_app.router)
+for middleware in reversed(api_app.user_middleware):
+    app.add_middleware(middleware.cls, **middleware.options)
+for exception, handler in api_app.exception_handlers.items():
+    app.add_exception_handler(exception, handler)
+
+
+@app.get('/')
+def root():
+    return {'name': 'NatureGen API', 'health': '/api/health'}
+
 
 if __name__ == '__main__':
-    # One worker only: the job queue lives in this process.
-    uvicorn.run(app, host='0.0.0.0', port=7860)
+    app.launch(server_name='0.0.0.0', server_port=7860)
